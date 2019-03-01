@@ -1,26 +1,43 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { Component, useEffect, useState } from 'react';
 import './App.css';
+import { NavLink, Route, Switch } from 'react-router-dom';
+import SignIn from './component/Signin';
+import SignUp from './component/Signup';
+import Users from './component/Users';
 
 class App extends Component {
+  logout = () => {
+    localStorage.removeItem('token');
+
+    this.props.history.push('/signin');
+  };
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+      <>
+        <header>
+          <nav>
+            <NavLink to='/signin'>
+              <h2>Sign In </h2>
+            </NavLink>
+            <NavLink to='/signup'>
+              <h2>Sign Up</h2>
+            </NavLink>
+            <NavLink to='/users'>
+              <h2>Users</h2>
+            </NavLink>
+          </nav>
+
+          <button onClick={this.logout}>Logout</button>
         </header>
-      </div>
+
+        <main>
+          <Switch>
+            <Route to='/signup' component={SignUp} />
+            <Route exact to='/signin' component={SignIn} />
+            <Route to='/users' component={Users} />
+          </Switch>
+        </main>
+      </>
     );
   }
 }
